@@ -68,7 +68,7 @@ const Basket = () => {
                         className={classes.inline}
                         color="textPrimary"
                       >
-                        {product.id}
+                        &pound;{(product.price / 100).toFixed(2)}
                       </Typography>
                       {` — ${product.description}`}
                     </React.Fragment>
