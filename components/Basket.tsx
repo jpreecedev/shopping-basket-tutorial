@@ -12,10 +12,10 @@ import {
   Typography
 } from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
-import { ProductItem } from "../global"
-import { Spinner } from "./Spinner"
+import { useSelector } from "react-redux"
 
-import { store, add } from "../store"
+import { ProductItem } from "../global"
+import { store, remove } from "../store"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,12 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Basket = () => {
   const classes = useStyles({})
-  const loading = false
-  const selectedProducts = store.getState()
-
-  if (loading) {
-    return <Spinner />
-  }
+  const products = useSelector((state: ProductItem[]) => state)
 
   return (
     <>
@@ -52,50 +47,54 @@ const Basket = () => {
         Shopping Basket
       </Typography>
       <Typography component="p" variant="body1">
-        You have {selectedProducts.length} items in your basket
+        You have {products.filter(product => product.added).length} items in your basket
       </Typography>
       <List className={classes.root}>
-        {selectedProducts.map((product: ProductItem) => (
-          <React.Fragment key={product.id}>
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar alt="Remy Sharp" />
-              </ListItemAvatar>
-              <ListItemText
-                primary={product.title}
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      className={classes.inline}
-                      color="textPrimary"
-                    >
-                      {product.id}
-                    </Typography>
-                    {` — ${product.description}`}
-                  </React.Fragment>
-                }
-              />
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => store.dispatch(add({ id: product.id }))}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <Divider variant="inset" component="li" />
-          </React.Fragment>
-        ))}
+        {products
+          .filter(product => product.added)
+          .map((product: ProductItem) => (
+            <React.Fragment key={product.id}>
+              <ListItem alignItems="flex-start">
+                <ListItemAvatar>
+                  <Avatar alt="Product" src={product.imageUrl} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={product.title}
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        className={classes.inline}
+                        color="textPrimary"
+                      >
+                        {product.id}
+                      </Typography>
+                      {` — ${product.description}`}
+                    </React.Fragment>
+                  }
+                />
+                <ListItemSecondaryAction>
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => store.dispatch(remove({ id: product.id }))}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <Divider variant="inset" component="li" />
+            </React.Fragment>
+          ))}
         <ListItem className={classes.listItem}>
           <Typography variant="subtitle1" className={classes.total}>
             &pound;
-            {(selectedProducts.reduce((acc, current) => (acc += current.price), 0) / 100).toFixed(
-              2
-            )}
+            {(
+              products
+                .filter(product => product.added)
+                .reduce((acc, current) => (acc += current.price), 0) / 100
+            ).toFixed(2)}
           </Typography>
         </ListItem>
       </List>
