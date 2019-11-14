@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "dist",
+    "target": "es2019",
+    "isolatedModules": false,
+    "noEmit": false,
+    "strict": false,
+    "preserveConstEnums": true
+  },
+  "exclude": ["setup"],
+  "include": [
+    "server/**/*.ts",
+    "components",
+    "layouts",
+    "pages",
+    "store",
+    "utils"
+  ]
+}
