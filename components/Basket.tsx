@@ -14,7 +14,8 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete"
 import { ProductItem } from "../global"
 import { Spinner } from "./Spinner"
-import { INITIAL_STATE } from "../state"
+
+import { store, add } from "../store"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Basket = () => {
   const classes = useStyles({})
   const loading = false
-  const selectedProducts = INITIAL_STATE.products
+  const selectedProducts = store.getState()
 
   if (loading) {
     return <Spinner />
@@ -77,7 +78,11 @@ const Basket = () => {
                 }
               />
               <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="delete">
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={() => store.dispatch(add({ id: product.id }))}
+                >
                   <DeleteIcon />
                 </IconButton>
               </ListItemSecondaryAction>
