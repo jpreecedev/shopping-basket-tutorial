@@ -20,7 +20,7 @@ npm run start # to start the application
 npm run dev # to start the application in developer mode
 ```
 
-_Note that by default, `next` will use port 3000. Given this is a common port to use for such things, you can override this executing any of the above commands with a [double dash](https://github.com/zeit/next.js#manual-setup):
+_Note that by default, `next` will use port 3000. Given this is a common port to use for such things, you can override this executing any of the above commands with a [double dash](https://github.com/zeit/next.js#manual-setup):_
 
 ```shell
 npm run dev -- -p 3003
